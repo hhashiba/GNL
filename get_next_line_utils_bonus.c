@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hhashiba <hhashiba@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/07 17:22:44 by hhashiba          #+#    #+#             */
-/*   Updated: 2022/06/07 17:22:45 by hhashiba         ###   ########.fr       */
+/*   Created: 2022/06/10 14:40:09 by hhashiba          #+#    #+#             */
+/*   Updated: 2022/06/10 14:40:11 by hhashiba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"get_next_line.h"
+#include	"get_next_line_bonus.h"
 
 size_t	ft_strlen_chr(const char *str, int c)
 {

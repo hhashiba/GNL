@@ -1,22 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hhashiba <hhashiba@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/07 17:22:29 by hhashiba          #+#    #+#             */
-/*   Updated: 2022/06/07 17:22:31 by hhashiba         ###   ########.fr       */
+/*   Created: 2022/06/10 14:39:56 by hhashiba          #+#    #+#             */
+/*   Updated: 2022/06/10 14:39:57 by hhashiba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include	"get_next_line.h"
+#include	"get_next_line_bonus.h"
 
 static char	*free_rtn(char *ptr1, char *ptr2)
 {
 	free(ptr1);
 	free(ptr2);
 	return (NULL);
+}
+
+static ssize_t	check_fd(t_line *save, int fd)
+{
+	ssize_t	i;
+
+	i = 0;
+	while (i + 1 < FOPEN_MAX)
+	{
+		if (save[i].fd == fd)
+			return (i);
+		if (save[i].fd == 0)
+		{
+			save[i].fd = fd;
+			return (i);
+		}
+		i++;
+	}
+	return (-1);
 }
 
 static bool	read_file(t_line *save, int fd)
@@ -58,22 +77,24 @@ static char	*get_line(t_line *save)
 
 char	*get_next_line(int fd)
 {
-	static t_line	save;
+	ssize_t			i;
+	static t_line	save[FOPEN_MAX];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (save.len == -1)
-		save.line = NULL;
-	save.len = 1;
-	while (save.len != 0)
+	i = check_fd(save, fd);
+	if (save[i].len == -1)
+		save[i].line = NULL;
+	save[i].len = 1;
+	while (save[i].len != 0)
 	{
-		if (read_file(&save, fd) == false)
+		if (read_file(&save[i], fd) == false)
 			return (NULL);
-		if (ft_strchr(save.line, '\n') != NULL)
-			return (get_line(&save));
+		if (ft_strchr(save[i].line, '\n') != NULL)
+			return (get_line(&save[i]));
 	}
-	save.len = -1;
-	if (save.line[0] == '\0')
-		return (free_rtn(save.line, NULL));
-	return (save.line);
+	save[i].len = -1;
+	if (save[i].line[0] == '\0')
+		return (free_rtn(save[i].line, NULL));
+	return (save[i].line);
 }

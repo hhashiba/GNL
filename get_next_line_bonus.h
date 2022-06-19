@@ -1,22 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.h                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hhashiba <hhashiba@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/07 17:22:56 by hhashiba          #+#    #+#             */
-/*   Updated: 2022/06/07 17:22:58 by hhashiba         ###   ########.fr       */
+/*   Created: 2022/06/10 14:39:34 by hhashiba          #+#    #+#             */
+/*   Updated: 2022/06/10 14:39:36 by hhashiba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#ifndef GET_NEXT_LINE_BONUS_H
+# define GET_NEXT_LINE_BONUS_H
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 1024
 # endif
 
+# include	<stdio.h>
 # include	<stdlib.h>
 # include	<fcntl.h>
 # include	<unistd.h>
@@ -24,6 +25,7 @@
 
 typedef struct s_line
 {
+	int		fd;
 	char	*line;
 	ssize_t	len;
 }	t_line;
