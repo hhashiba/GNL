@@ -23,7 +23,7 @@ static bool	read_file(t_line *save, int fd)
 {
 	char	*buf;
 
-	buf = malloc((size_t)(BUFFER_SIZE + 1) * sizeof(char));
+	buf = malloc(((size_t)(BUFFER_SIZE) + 1) * sizeof(char));
 	if (buf == NULL)
 		return (free_rtn(save->line, NULL));
 	save->len = read(fd, buf, BUFFER_SIZE);
