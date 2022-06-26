@@ -24,7 +24,7 @@ static ssize_t	check_fd(t_line *save, int fd)
 	ssize_t	i;
 
 	i = 0;
-	while (i + 1 < FOPEN_MAX)
+	while (i < FOPEN_MAX)
 	{
 		if (save[i].fd == fd)
 			return (i);
@@ -42,7 +42,7 @@ static bool	read_file(t_line *save, int fd)
 {
 	char	*buf;
 
-	buf = malloc(((size_t)(BUFFER_SIZE) + 1) * sizeof(char));
+	buf = malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
 	if (buf == NULL)
 		return (free_rtn(save->line, NULL));
 	save->len = read(fd, buf, BUFFER_SIZE);
@@ -80,9 +80,9 @@ char	*get_next_line(int fd)
 	ssize_t			i;
 	static t_line	save[FOPEN_MAX];
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
-		return (NULL);
 	i = check_fd(save, fd);
+	if (fd < 0 || BUFFER_SIZE <= 0 || i == -1)
+		return (NULL);
 	if (save[i].len == -1)
 		save[i].line = NULL;
 	save[i].len = 1;
