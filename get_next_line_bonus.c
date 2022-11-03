@@ -12,13 +12,6 @@
 
 #include	"get_next_line_bonus.h"
 
-static char	*free_rtn(char *ptr1, char *ptr2)
-{
-	free(ptr1);
-	free(ptr2);
-	return (NULL);
-}
-
 static ssize_t	check_fd(t_line *save, int fd)
 {
 	ssize_t	i;
@@ -44,15 +37,22 @@ static bool	read_file(t_line *save, int fd)
 
 	buf = malloc(((size_t)BUFFER_SIZE + 1) * sizeof(char));
 	if (buf == NULL)
-		return (free_rtn(save->line, NULL));
+	{
+		free(save->line);
+		return (NULL);
+	}
 	save->len = read(fd, buf, BUFFER_SIZE);
 	if (save->len == -1)
-		return (free_rtn(buf, save->line));
+	{
+		free(buf);
+		free(save->line);
+		return (NULL);
+	}
 	buf[save->len] = '\0';
 	save->line = ft_strjoin(save->line, buf);
-	if (save->line == NULL)
-		return (free_rtn(buf, NULL));
 	free(buf);
+	if (save->line == NULL)
+		return (NULL);
 	return (true);
 }
 
@@ -65,12 +65,18 @@ static char	*get_line(t_line *save)
 	rtn_len = ft_strlen_chr(save->line, '\n');
 	line = malloc((rtn_len + 2) * sizeof(char));
 	if (line == NULL)
-		return (free_rtn(save->line, NULL));
+	{
+		free(save->line);
+		return (NULL);
+	}
 	line = ft_strcpy_chr(line, save->line, '\n');
 	tmp = ft_strjoin(NULL, &save->line[rtn_len + 1]);
 	free(save->line);
 	if (tmp == NULL)
-		return (free_rtn(line, NULL));
+	{
+		free(line);
+		return (NULL);
+	}
 	save->line = tmp;
 	return (line);
 }
@@ -95,6 +101,9 @@ char	*get_next_line(int fd)
 	}
 	save[i].len = -1;
 	if (save[i].line[0] == '\0')
-		return (free_rtn(save[i].line, NULL));
+	{
+		free(save[i].line);
+		return (NULL);
+	}
 	return (save[i].line);
 }
